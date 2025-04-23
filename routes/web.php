@@ -3,6 +3,7 @@
 use App\Http\Controllers\GmailController;
 use App\Http\Controllers\GoogleAuthTestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-
-
 Route::get('/gmail', [GmailController::class, 'index'])->name('gmail.index');
 Route::post('/gmail/save-token', [GmailController::class, 'saveToken'])->name('gmail.saveToken');
 Route::post('/gmail/clear-token', [GmailController::class, 'clearToken'])->name('gmail.clearToken');
@@ -32,3 +29,10 @@ Route::get('/google-test', [GoogleAuthTestController::class, 'showLoginPage'])->
 Route::post('/google-test/process', [GoogleAuthTestController::class, 'processToken'])->name('google.test.process');
 Route::get('/google-test/user', [GoogleAuthTestController::class, 'testUserData'])->name('google.test.user');
 Route::get('/google-test/logout', [GoogleAuthTestController::class, 'testLogout'])->name('google.test.logout');
+
+// Rutas de restablecimiento de contraseña
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset')
+    ->where('token', '.*');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');

@@ -45,7 +45,8 @@ class CustomResetPasswordNotification extends ResetPassword
             ->greeting('¡Hola desde la app Mascota!')
             ->line('Estás recibiendo este correo porque recibimos una solicitud de restablecimiento de contraseña para tu cuenta.')
             ->action('Restablecer Contraseña', $url)
-            ->line('Este enlace de restablecimiento de contraseña expirará en 60 minutos.')
+            ->line('Al hacer clic en el botón anterior, serás dirigido a una página segura donde podrás establecer tu nueva contraseña.')
+            ->line('Este enlace expirará en 60 minutos.')
             ->line('Si no solicitaste un restablecimiento de contraseña, no es necesario realizar ninguna acción.')
             ->salutation('Saludos, ' . config('app.name'));
     }
