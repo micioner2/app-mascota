@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Prueba de Autenticación Google</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Obtener Token de Google para Pruebas</h1>
+
+    <div id="g_id_onload" data-client_id="977575737869-bk60d43r9aifi19dt8o6k875g7eua83p.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
+    </div>
+
+    <div>
+        <h3>ID Token:</h3>
+        <pre id="token-display">No hay token todavía</pre>
+        <button id="copy-button" onclick="copyToken()" disabled>Copiar Token</button>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            const token = response.credential;
+            document.getElementById('token-display').textContent = token;
+            document.getElementById('copy-button').disabled = false;
+            console.log("ID Token:", token);
+        }
+
+        function copyToken() {
+            const tokenText = document.getElementById('token-display').textContent;
+            navigator.clipboard.writeText(tokenText)
+                .then(() => alert('Token copiado al portapapeles'))
+                .catch(err => console.error('Error al copiar:', err));
+        }
+    </script>
+</body>
+
+</html>
