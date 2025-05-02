@@ -4,6 +4,8 @@ use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\GoogleAuthController;
+use App\Http\Controllers\API\TipoMascotaController;
+use App\Http\Controllers\API\MascotaController;
 
 
 /*
@@ -44,4 +46,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/logout-all', [AuthController::class, 'logoutAll']);
     Route::post('/set-password', [AuthController::class, 'setPassword']);
+
+    // Rutas para tipos de mascota
+    Route::get('/tipo-mascota', [TipoMascotaController::class, 'index']);
+
+    // Rutas para mascotas
+    Route::get('/mascotas', [MascotaController::class, 'index']);
+    Route::post('/mascotas', [MascotaController::class, 'store']);
+    Route::get('/mascotas/{id}', [MascotaController::class, 'show']);
+    Route::put('/mascotas/{id}', [MascotaController::class, 'update']);
+    Route::delete('/mascotas/{id}', [MascotaController::class, 'destroy']);
+
+    // Or you can use the resource route which creates all these routes automatically:
+    // Route::apiResource('mascotas', MascotaController::class);
 });
