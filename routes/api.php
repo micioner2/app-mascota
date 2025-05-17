@@ -33,7 +33,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/google-auth', [AuthController::class, 'googleAuth']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::middleware('auth:sanctum')->get('/auth/check-status', [AuthController::class, 'checkAuthStatus']);
 
 // Password Reset Routes
 Route::get('/reset-password/{token}', function ($token) {

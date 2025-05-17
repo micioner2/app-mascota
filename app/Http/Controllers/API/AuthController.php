@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Auth\AuthenticationException;
 
 class AuthController extends Controller
 {
@@ -358,6 +360,58 @@ class AuthController extends Controller
     {
         return response()->json([
             'user' => $request->user(),
+        ], 200);
+    }
+
+    /**
+     * Validar el estado de autenticación del token
+     */
+    public function checkAuthStatus(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Token inválido o expirado',
+                'is_authenticated' => false
+            ], 401);
+        }
+
+        // Generar un nuevo token (sin eliminar los anteriores)
+        $newToken = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Token válido',
+            'is_authenticated' => true,
+            'user' => $user,
+            'new_token' => $newToken
+        ], 200);
+    }
+
+    /**
+     * Generar un nuevo token
+     */
+    public function refreshToken(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Token inválido o expirado',
+                'success' => false
+            ], 401);
+        }
+
+        // Opcional: puedes revocar el token actual si quieres que solo haya uno activo
+        // $request->user()->currentAccessToken()->delete();
+
+        // Generar un nuevo token
+        $newToken = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Nuevo token generado correctamente',
+            'success' => true,
+            'token' => $newToken
         ], 200);
     }
 }
